@@ -1,0 +1,21 @@
+# Node
+node_modules/
+
+# .NET build folders
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# NuGet
+.nuget/
+
+# Build outputs
+build/
+dist/
+
+# Environment files
+.env
