@@ -7,26 +7,73 @@ namespace WebAPI.Service
 {
     public class EmployeeService : IEmployeeService
     {
-        private readonly MovieDbContext _context;
+        private readonly HrmsDbContext _context;
 
-        public EmployeeService(MovieDbContext context)
+        public EmployeeService(HrmsDbContext context)
         {
             _context = context;
         }
-        public async Task<List<Employee>> GetAllEmployeesAsync()
+
+        public async Task<string> GetNextEmployeeId()
         {
-            return await _context.tbl_Employee.ToListAsync();
+            using (var connection = _context.Database.GetDbConnection())
+            {
+                await connection.OpenAsync();
+
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "sp_GetNextEmployeeId";
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    var result = await command.ExecuteScalarAsync();
+
+                    return result?.ToString();
+                }
+            }
         }
 
-        //public List<Employee> GetAllEmployees()
-        //{
-        //    return _context.tbl_Employee.ToList();
-        //}
+        public async Task<List<object>> GetAllEmployeesAsync()
+        {
+            var employees = await
+                (from e in _context.tbl_Employee
 
-        //public Employee GetEmployeeById(int id)
-        //{
-        //    return _context.tbl_Employee.FirstOrDefault(x => x.Id == id);
-        //}
+                 join d in _context.tbl_Designations
+                 on e.Designation equals d.Code
+                 into designationGroup
+
+                 from d in designationGroup.DefaultIfEmpty()
+
+                 join b in _context.tbl_Department
+          on e.Department equals b.Code
+          into departmentGroup
+
+                 from b in departmentGroup.DefaultIfEmpty()
+
+                 select new
+                 {
+                     e.Id,
+                     e.Name,
+                     e.Email,
+                     e.Phone,
+
+                     Designation = d != null ? d.Name : "",
+
+                    Department=b!=null?b.Name:"",
+                     e.Salary,
+                     e.Allowance,
+                     e.IsActive,
+                     e.profilePhotoFile,
+
+                     ProfilePhotoUrl = e.profilePhotoFile != null
+                         ? "/uploads/" + e.profilePhotoFile
+                         : null
+                 })
+                .ToListAsync();
+
+            return employees.Cast<object>().ToList();
+        }
+
+
 
         public async Task<Employee> GetEmployeeByIdAsync(int id)
         {
@@ -35,13 +82,7 @@ namespace WebAPI.Service
         }
 
 
-        //public Employee CreateEmployee(Employee employee)
-        //{
-        //    _context.tbl_Employee.Add(employee);
-        //    _context.SaveChanges();
-        //    return employee;
-        //}
-
+     
         public async Task<Employee> CreateEmployeeAsync(Employee employee)
         {
             _context.tbl_Employee.Add(employee);
@@ -50,21 +91,7 @@ namespace WebAPI.Service
         }
 
 
-        //public Employee UpdateEmployee(int id, Employee employee)
-        //{
-        //    var existing = _context.tbl_Employee.Find(id);
-        //    if (existing == null) return null;
-
-        //    existing.Name = employee.Name;
-        //    existing.Email = employee.Email;
-        //    existing.Phone = employee.Phone;
-        //    existing.Designation = employee.Designation;
-        //    existing.Salary = employee.Salary;
-        //    existing.IsActive = employee.IsActive;
-
-        //    _context.SaveChanges();
-        //    return existing;
-        //}
+   
 
         public async Task<Employee> UpdateEmployeeAsync(int id, Employee employee)
         {
@@ -83,15 +110,7 @@ namespace WebAPI.Service
         }
 
 
-        //public bool DeleteEmployee(int id)
-        //{
-        //    var emp = _context.tbl_Employee.Find(id);
-        //    if (emp == null) return false;
-
-        //    _context.tbl_Employee.Remove(emp);
-        //    _context.SaveChanges();
-        //    return true;
-        //}
+     
 
 
         public async Task<bool> DeleteEmployeeAsync(int id)
@@ -103,6 +122,9 @@ namespace WebAPI.Service
             await _context.SaveChangesAsync();
             return true;
         }
+
+
+     
 
     }
 }

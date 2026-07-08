@@ -1,34 +1,4 @@
 ﻿
-//import axios from "axios";
-
-//const API_URL = `${process.env.REACT_APP_API_URL}/Employees`;
-
-//export const addEmployee = (movie) => {
-//    return axios.post(API_URL, movie, {
-//        headers: { "Content-Type": "application/json" }
-//    });
-//};
-
-
-
-//////import axios from "axios";
-
-//////const API_URL = `${process.env.REACT_APP_API_URL}/Employees`;
-
-//////export const getAllEmployees = (movie) => {
-//////    return axios.post(API_URL, movie, {
-//////        headers: { "Content-Type": "application/json" }
-//////    });
-//////};
-
-
-//////import axios from "axios";
-
-//////const API_URL = "https://localhost:7142/api/Employees";
-
-//////export const getAllEmployees = () => {
-//////    return axios.get(API_URL);
-//////};
 
 import axios from "axios";
 

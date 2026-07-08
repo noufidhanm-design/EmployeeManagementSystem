@@ -175,9 +175,11 @@ function EmployeeList() {
                     <table className="table table-hover table-bordered mb-0">
                         <thead className="table-light">
                             <tr>
+                            <th>Profile</th>
                                 <th>NAME</th>
                                 <th>Email</th>
                                 <th>Phone</th>
+                                <th>Department</th>
                                 <th>Designation</th>
                                 <th>Salary</th>
                                 <th>Status</th>
@@ -194,9 +196,26 @@ function EmployeeList() {
                             ) : (
                                 employees.map((emp) => (
                                     <tr key={emp.id}>
+                                        <td>
+                                            {emp.profilePhotoUrl ? (
+                                                <img
+                                                    src={`https://localhost:7142${emp.profilePhotoUrl}`}
+                                                    alt="Profile"
+                                                    width="50"
+                                                    height="50"
+                                                    style={{
+                                                        borderRadius: "50%",
+                                                        objectFit: "cover"
+                                                    }}
+                                                />
+                                            ) : (
+                                                "No Image"
+                                            )}
+                                        </td>
                                         <td>{emp.name}</td>
                                         <td>{emp.email}</td>
                                         <td>{emp.phone}</td>
+                                        <td>{emp.department}</td>
                                         <td>{emp.designation}</td>
                                         <td>{emp.salary}</td>
                                         <td>

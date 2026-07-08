@@ -1,5 +1,9 @@
 ﻿import { Link } from "react-router-dom";
-
+import { FaUserCheck } from "react-icons/fa";
+import { FaPlaneDeparture } from "react-icons/fa";
+import { FaBuilding } from "react-icons/fa";
+import { FaUserTie } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 function Sidebar() {
     return (
         <div className="text-white">
@@ -23,28 +27,35 @@ function Sidebar() {
 
                 <li className="nav-item">
                     <Link className="nav-link text-white" to="/employee-list">
-                        👥 Employee List
+                        <FaUser className="me-2"/>
+                       Employee List
                     </Link>
                 </li>
                 <li className="nav-item">
-                    <Link className="nav-link text-white" to="/departments">
-                        🏢 Departments
+                    <Link className="nav-link text-white" to="/departmentList">
+                        <FaBuilding className="me-2"/>
+                         Departments
                     </Link>
                 </li>
 
                 <li className="nav-item">
-                    <Link className="nav-link text-white" to="/designations">
-                        🧑‍💼 Designations / Roles
+                    <Link className="nav-link text-white" to="/designationList">
+                        <FaUserTie className="me-2"/>
+                         Designations / Roles
                     </Link>
                 </li>
                 <li className="nav-item">
                     <Link className="nav-link text-white" to="/attendance">
-                        🧑‍Attendance
+                        <FaUserCheck className="me-2" />
+                        Attendance
                     </Link>
                   
                 </li>
                 <li className="nav-item">
-                    <Link className="nav-link text-white" to="/Leave">Leave Management</Link>
+                    <Link className="nav-link text-white" to="/LeaveManagement">
+                        <FaPlaneDeparture className="me-2" />
+                        Leave Management
+                    </Link>
                 </li>
             
             </ul>

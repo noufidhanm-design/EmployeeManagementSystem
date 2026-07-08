@@ -12,7 +12,11 @@ export const adddesignation = (designation) => {
         }
     );
 };
+export const GetDesignation = () => {
+    return axios.get(`${API_URL}/GetDesignation`);
 
+
+};
 
 
 

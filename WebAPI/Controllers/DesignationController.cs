@@ -15,12 +15,32 @@ namespace WebAPI.Controllers
     
     public class DesignationController : ControllerBase
     {
-        private readonly MovieDbContext _context;
+        private readonly HrmsDbContext _context;
 
-        public DesignationController(MovieDbContext context)
+        public DesignationController(HrmsDbContext context)
         {
             _context = context;
         }
+        [HttpGet("GetDesignation")]
+        public async Task<IActionResult> GetDesignations()
+        {
+            var designations = await (from d in _context.tbl_Designations
+                                      join dep in _context.tbl_Department
+                                      on d.Department equals dep.Code
+                                      select new Designation
+                                      {
+                                          Id = d.Id,
+                                          Name = d.Name,
+                                          Code = d.Code,
+                                          Department = dep.Name,
+                                        
+                                          Level = d.Level,
+                                          IsActive = d.IsActive
+                                      }).ToListAsync();
+
+            return Ok(designations);
+        }
+
         [HttpPost("AddDesignation")]
         public async Task<IActionResult> AddDesignation([FromBody] Designation dto)
         {
