@@ -15,28 +15,29 @@ namespace WebAPI.Controllers
     
     public class DesignationController : ControllerBase
     {
-        private readonly HrmsDbContext _context;
+        private readonly IDesignationService _designationService;
 
-        public DesignationController(HrmsDbContext context)
+        public DesignationController(IDesignationService designationService)
         {
-            _context = context;
+            _designationService = designationService;
         }
         [HttpGet("GetDesignation")]
         public async Task<IActionResult> GetDesignations()
         {
-            var designations = await (from d in _context.tbl_Designations
-                                      join dep in _context.tbl_Department
-                                      on d.Department equals dep.Code
-                                      select new Designation
-                                      {
-                                          Id = d.Id,
-                                          Name = d.Name,
-                                          Code = d.Code,
-                                          Department = dep.Name,
-                                        
-                                          Level = d.Level,
-                                          IsActive = d.IsActive
-                                      }).ToListAsync();
+            //var designations = await (from d in _designationService.tbl_Designations
+            //                          join dep in _designationService.tbl_Department
+            //                          on d.Department equals dep.Code
+            //                          select new Designation
+            //                          {
+            //                              Id = d.Id,
+            //                              Name = d.Name,
+            //                              Code = d.Code,
+            //                              Department = dep.Name,
+
+            //                              Level = d.Level,
+            //                              IsActive = d.IsActive
+            //                          }).ToListAsync();
+            var designations = await _designationService.GetDesignationsAsync();
 
             return Ok(designations);
         }
@@ -55,8 +56,8 @@ namespace WebAPI.Controllers
                 Description = dto.Description
             };
 
-            await _context.tbl_Designations.AddAsync(designation);
-            await _context.SaveChangesAsync();
+          
+            await _designationService.AddDesignationAsync(designation);
 
             return Ok("Designation added successfully");
         }

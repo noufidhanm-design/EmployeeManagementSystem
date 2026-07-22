@@ -14,6 +14,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //reg services
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IDesignationService, DesignationService>();
 
 
 // DbContext (optional, can skip if testing without DB)
@@ -46,13 +48,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-app.UseCors("AllowReact"); // Must be before Authorization
-
-
+//middleware controller
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+
+app.UseCors("AllowReact");
 
 app.UseAuthorization();
 

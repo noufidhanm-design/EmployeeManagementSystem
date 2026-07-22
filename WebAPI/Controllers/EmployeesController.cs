@@ -199,24 +199,7 @@ private readonly IEmployeeService _employeeService;
         {
             var employees = await _employeeService.GetAllEmployeesAsync();
 
-            //var result = employees.Select(e => new
-            //{
-            //    e.Id,
-            //    e.Name,
-            //    e.Email,
-            //    e.Phone,
-            //    e.Designation,
-            //    e.Department,
-            //    e.Salary,
-            //    e.Allowance,
-            //    e.IsActive,
-            //    e.profilePhotoFile,
-
-            //    ProfilePhotoUrl = e.profilePhotoFile != null
-            //        ? "/uploads/" + e.profilePhotoFile
-            //        : null
-            //});
-
+           
             return Ok(new BaseResponseModel
             {
                 Status = true,

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Data;
 using WebAPI.Entities;
+using WebAPI.Service;
 
 namespace WebAPI.Controllers
 {
@@ -9,16 +10,18 @@ namespace WebAPI.Controllers
     [ApiController]
     public class DepartmentController : ControllerBase
     {
-        private readonly HrmsDbContext _context;
-        public DepartmentController(HrmsDbContext context)
-        {
-            _context = context;
-        }
+        private readonly IDepartmentService _departmentService;
 
+
+        public DepartmentController(IDepartmentService departmentService)
+        {
+            _departmentService = departmentService;
+        }
         [HttpGet("GetDepartments")]
         public async Task<IActionResult> GetDepartments()
         {
-            var departments = await _context.tbl_Department.ToListAsync();
+            var departments = await _departmentService.GetDepartmentsAsync();
+
             return Ok(departments);
         }
 
@@ -32,8 +35,7 @@ namespace WebAPI.Controllers
                 Description=dto.Description,
                 IsActive=dto.IsActive
             };
-            await _context.tbl_Department.AddAsync(department);
-            await _context.SaveChangesAsync();
+            await _departmentService.AddDepartmentAsync(department);
 
             return Ok("Department added successfully");
 
